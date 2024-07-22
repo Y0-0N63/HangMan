@@ -1,0 +1,43 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: 'Comic Sans MS', cursive;
+}
+
+body {
+  background-color: #d0d5ff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.play {
+  width: 1500px;
+  height: 750px;
+
+  background-color: beige;
+  border: 4px solid black;
+  border-radius: 5px;
+
+  display: flex;
+}
+
+.play__left {
+  border: 1px solid red;
+
+  display: flex;
+  align-items: center;
+}
+
+.play__hangMan {
+  width: 500px;
+  height: 700px;
+  border: 1px solid green;
+}
+
+.play__right {
+  border: 1px solid blue;
+
+  display: flex;
+}
