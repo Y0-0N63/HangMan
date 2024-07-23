@@ -19,9 +19,9 @@ body {
   height: 650px;
   padding: 0 50px;
 
-  background-color: beige;
+  background-color: white;
   border: 4px solid black;
-  border-radius: 5px;
+  border-radius: 25px;
 
   display: flex;
   flex-direction: column;
