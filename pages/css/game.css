@@ -31,7 +31,7 @@ body {
   justify-content: center;
 }
 
-.play__hangMan {
+.left__hangMan {
   width: 500px;
   height: 700px;
 }
@@ -45,7 +45,7 @@ body {
   align-items: center;
 }
 
-.play__blank {
+.right__blank {
   width: 900px;
   font-size: 100px;
 
