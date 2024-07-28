@@ -116,38 +116,44 @@ body {
 }
 
 .play_popup {
-  display: none; /* 기본적으로 숨김 상태 */
-  position: fixed; /* 화면 고정 위치 */
+  display: none;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* 반투명 검정 배경 */
+  background-color: rgba(0, 0, 0, 0.5);
   justify-content: center;
   align-items: center;
 }
 
 .popup_content {
-  background-color: white;
-  border: 2px solid black;
-  padding: 20px;
-  border-radius: 10px;
+  width: 1000px;
   position: relative;
-  width: 80%;
-  max-width: 600px;
+  padding: 75px;
+  font-size: 25px;
+  background-color: white;
+  border: 3px solid black;
+  border-radius: 10px;
 }
 
 .content_close {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  background-color: red;
+  top: 20px;
+  right: 20px;
+  width: 45px;
+  height: 45px;
+  background-color: #cc0000;
   color: white;
   border: none;
-  padding: 5px 10px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 25px;
   cursor: pointer;
 }
 
 .content_close:hover {
-  background-color: darkred;
+  background-color: #a30000;
 }
