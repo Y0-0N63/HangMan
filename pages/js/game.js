@@ -64,11 +64,7 @@ function gameOver() {
 }
 
 function showGameOver(message) {
-  const popup = document.querySelector('.popup__gameOver');
-  const messageElem = document.querySelector('.gameOver__message');
-  messageElem.textContent = message;
-  document.querySelector('.play__popup').style.display = 'flex';
-  popup.style.display = 'flex';
+  showPopup('.popup__gameOver', message);
 }
 
 // 알파벳 버튼 클릭
@@ -104,6 +100,19 @@ document.querySelectorAll('.keyboard__buttons button').forEach((button) => {
 });
 
 // 팝업창들
+function showPopup(popupSelector, message) {
+  const popups = document.querySelectorAll('.play__popup > div');
+  popups.forEach((popup) => (popup.style.display = 'none'));
+
+  const popup = document.querySelector(popupSelector);
+  if (message) {
+    popup.querySelector('.gameOver__message').textContent = message;
+  }
+
+  document.querySelector('.play__popup').style.display = 'flex';
+  popup.style.display = 'flex';
+}
+
 document.querySelector('#others__how').addEventListener('click', function () {
   document.querySelector('.play__popup').style.display = 'flex';
   document.querySelector('.popup__howToPlay').style.display = 'flex';
