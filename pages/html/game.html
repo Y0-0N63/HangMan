@@ -7,6 +7,10 @@
     <link rel="stylesheet" href="../css/game.css" />
   </head>
   <body>
+    <div class="timer">
+      <img src="../img/timer.jpg" alt="timer" />
+      <div class="timer__display">00:00</div>
+    </div>
     <div class="play">
       <div class="play__left">
         <div class="left__hangMan"></div>
@@ -82,13 +86,7 @@
           <div class="gameOver__message"></div>
           <div class="gameOver__buttons">
             <button id="gameOver__restart">RESTART</button>
-            <button
-              type="button"
-              id="gameOver__quit"
-              onclick="window.location.href='index.html';"
-            >
-              QUIT
-            </button>
+            <button>QUIT</button>
           </div>
         </div>
       </div>
