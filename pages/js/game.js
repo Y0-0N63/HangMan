@@ -58,8 +58,8 @@ function gameOver() {
 
   if (findAll) {
     showGameOver('You WIN! 😄🎉', true);
-  } else if (wrong > maxWrong) {
-    showGameOver(`Game Over 😭 Your word is… "${selectedVoca}"`, false);
+  } else if (wrong >= maxWrong) {
+    showGameOver(`Game Over 😭 <br> Your word is… "${selectedVoca}"`, false);
   }
 }
 
@@ -106,14 +106,8 @@ function showPopup(popupSelector, message, win) {
 
   const popup = document.querySelector(popupSelector);
   if (message) {
-    popup.querySelector('.gameOver__message').textContent = message;
+    popup.querySelector('.gameOver__message').innerHTML = message;
   }
-
-  const buttonsDiv = popup.querySelector('.gameOver__buttons');
-  buttonsDiv.innerHTML = `
-    <button id="gameOver__quit">QUIT</button>
-    <button id="gameOver__restart">RESTART</button>
-  `;
 
   document.querySelector('.play__popup').style.display = 'flex';
   popup.style.display = 'flex';

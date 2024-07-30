@@ -198,3 +198,44 @@ body {
   font-size: 25px;
   cursor: pointer;
 }
+
+.popup__gameOver {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 400px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  text-align: center;
+  font-size: 25px;
+}
+
+.gameOver__message {
+  font-size: 30px; /* 메시지 폰트 크기 조정 */
+  margin-bottom: 20px; /* 메시지와 버튼 사이의 간격 조정 */
+}
+
+.gameOver__buttons {
+  display: flex;
+  justify-content: space-around;
+}
+
+.gameOver__buttons button {
+  width: 150px; /* 버튼의 너비 조정 */
+  height: 50px;
+  border: none;
+  border-radius: 5px;
+  background-color: black;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  margin: 0 10px; /* 버튼 간의 간격 조정 */
+}
+
+.gameOver__buttons button:hover {
+  background-color: #333; /* 버튼 호버 시 색상 변경 */
+}
