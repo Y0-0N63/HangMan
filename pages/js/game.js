@@ -57,14 +57,14 @@ function gameOver() {
   ).every((span) => span.textContent !== '_');
 
   if (findAll) {
-    showGameOver('You Win!');
+    showGameOver('You WIN! 😄🎉', true);
   } else if (wrong > maxWrong) {
-    showGameOver('Game Over');
+    showGameOver(`Game Over 😭 Your word is… "${selectedVoca}"`, false);
   }
 }
 
-function showGameOver(message) {
-  showPopup('.popup__gameOver', message);
+function showGameOver(message, win) {
+  showPopup('.popup__gameOver', message, win);
 }
 
 // 알파벳 버튼 클릭
@@ -100,7 +100,7 @@ document.querySelectorAll('.keyboard__buttons button').forEach((button) => {
 });
 
 // 팝업창들
-function showPopup(popupSelector, message) {
+function showPopup(popupSelector, message, win) {
   const popups = document.querySelectorAll('.play__popup > div');
   popups.forEach((popup) => (popup.style.display = 'none'));
 
@@ -109,8 +109,28 @@ function showPopup(popupSelector, message) {
     popup.querySelector('.gameOver__message').textContent = message;
   }
 
+  const buttonsDiv = popup.querySelector('.gameOver__buttons');
+  buttonsDiv.innerHTML = `
+    <button id="gameOver__quit">QUIT</button>
+    <button id="gameOver__restart">RESTART</button>
+  `;
+
   document.querySelector('.play__popup').style.display = 'flex';
   popup.style.display = 'flex';
+
+  document
+    .querySelector('#gameOver__quit')
+    .addEventListener('click', function () {
+      // 페이지 새로고침으로 게임 종료
+      window.location.reload();
+    });
+
+  document
+    .querySelector('#gameOver__restart')
+    .addEventListener('click', function () {
+      // 페이지 새로고침으로 게임 재시작
+      location.reload();
+    });
 }
 
 document.querySelector('#others__how').addEventListener('click', function () {
