@@ -45,6 +45,7 @@ function makeBlank() {
 
 document.addEventListener('DOMContentLoaded', function () {
   makeBlank();
+  setupQuitButton(); // 페이지가 로드된 후 quit 버튼 설정
 });
 
 // 게임 종료
@@ -101,62 +102,81 @@ document.querySelectorAll('.keyboard__buttons button').forEach((button) => {
 
 // 팝업창들
 function showPopup(popupSelector, message, win) {
+  // 모든 팝업 숨기기
   const popups = document.querySelectorAll('.play__popup > div');
   popups.forEach((popup) => (popup.style.display = 'none'));
 
   const popup = document.querySelector(popupSelector);
-  if (message) {
-    popup.querySelector('.gameOver__message').innerHTML = message;
+  if (popup) {
+    if (message) {
+      popup.querySelector('.gameOver__message').innerHTML = message;
+    }
+
+    // 현재 팝업만 보이게 하기
+    document.querySelector('.play__popup').style.display = 'flex';
+    popup.style.display = 'flex';
   }
 
-  document.querySelector('.play__popup').style.display = 'flex';
-  popup.style.display = 'flex';
-
-  document
-    .querySelector('#gameOver__quit')
-    .addEventListener('click', function () {
-      // 페이지 새로고침으로 게임 종료
-      window.location.reload();
-    });
+  // 버튼 클릭 시 동일한 행동을 하도록 이벤트 리스너 추가
+  setupQuitButton();
 
   document
     .querySelector('#gameOver__restart')
     .addEventListener('click', function () {
-      // 페이지 새로고침으로 게임 재시작
+      // 페이지 새로고침 (게임 재시작)
       location.reload();
     });
 }
 
+// 'quit' 버튼의 공통 동작을 설정하는 함수
+function setupQuitButton() {
+  // 버튼 선택자를 모두 명시
+  const quitSelectors = ['#gameOver__quit', '#pause__quit'];
+  quitSelectors.forEach((selector) => {
+    const button = document.querySelector(selector);
+    if (button) {
+      button.addEventListener('click', function () {
+        window.location.href = 'index.html';
+      });
+    }
+  });
+}
+
+// 도움말 보기
 document.querySelector('#others__how').addEventListener('click', function () {
-  document.querySelector('.play__popup').style.display = 'flex';
-  document.querySelector('.popup__howToPlay').style.display = 'flex';
+  showPopup('.popup__howToPlay');
 });
 
 document
   .querySelector('.howToPlay__close')
   .addEventListener('click', function () {
-    document.querySelector('.popup__howToPlay').style.display = 'none';
-    document.querySelector('.play__popup').style.display = 'none';
+    hidePopup('.popup__howToPlay');
   });
 
+// 일시 정지 및 재개
 document.querySelector('#others__pause').addEventListener('click', function () {
-  document.querySelector('.play__popup').style.display = 'flex';
-  document.querySelector('.popup__pause').style.display = 'flex';
+  showPopup('.popup__pause');
 });
 
 document.querySelector('.pause__close').addEventListener('click', function () {
-  document.querySelector('.popup__pause').style.display = 'none';
-  document.querySelector('.play__popup').style.display = 'none';
+  hidePopup('.popup__pause');
 });
 
 document.querySelector('#pause__resume').addEventListener('click', function () {
-  document.querySelector('.popup__pause').style.display = 'none';
-  document.querySelector('.play__popup').style.display = 'none';
+  hidePopup('.popup__pause');
 });
 
 document
   .querySelector('.gameOver__close')
   .addEventListener('click', function () {
-    document.querySelector('.popup__gameOver').style.display = 'none';
-    document.querySelector('.play__popup').style.display = 'none';
+    hidePopup('.popup__gameOver');
   });
+
+// 팝업 숨기기
+function hidePopup(popupSelector) {
+  const popup = document.querySelector(popupSelector);
+  if (popup) {
+    popup.style.display = 'none';
+    document.querySelector('.play__popup').style.display = 'none';
+  }
+}
