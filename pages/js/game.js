@@ -46,12 +46,16 @@ function makeBlank() {
 document.addEventListener('DOMContentLoaded', function () {
   makeBlank();
   setupQuitButton(); // 페이지가 로드된 후 quit 버튼 설정
+  startTimer(); // 페이지가 로드될 때 타이머 시작
 });
 
-// 게임 종료
 let wrong = 0;
 const maxWrong = 6;
+let timer;
+let seconds = 0;
+let isPaused = false;
 
+// 게임 종료
 function gameOver() {
   const findAll = Array.from(
     document.querySelectorAll('.right__blank span')
@@ -70,6 +74,8 @@ function showGameOver(message, win) {
 
 // 알파벳 버튼 클릭
 function clickAlphabet(event) {
+  if (isPaused) return; // 게임이 일시 정지 중일 때는 아무 동작도 하지 않음
+
   const button = event.target;
   const letter = button.textContent;
 
@@ -144,6 +150,10 @@ function setupQuitButton() {
 
 // 도움말 보기
 document.querySelector('#others__how').addEventListener('click', function () {
+  if (!isPaused) {
+    stopTimer();
+    isPaused = true;
+  }
   showPopup('.popup__howToPlay');
 });
 
@@ -151,11 +161,19 @@ document
   .querySelector('.howToPlay__close')
   .addEventListener('click', function () {
     hidePopup('.popup__howToPlay');
+    if (isPaused) {
+      startTimer();
+      isPaused = false;
+    }
   });
 
 // 일시 정지 및 재개
 document.querySelector('#others__pause').addEventListener('click', function () {
-  showPopup('.popup__pause');
+  if (!isPaused) {
+    stopTimer();
+    isPaused = true;
+    showPopup('.popup__pause');
+  }
 });
 
 document.querySelector('.pause__close').addEventListener('click', function () {
@@ -163,7 +181,11 @@ document.querySelector('.pause__close').addEventListener('click', function () {
 });
 
 document.querySelector('#pause__resume').addEventListener('click', function () {
-  hidePopup('.popup__pause');
+  if (isPaused) {
+    startTimer();
+    isPaused = false;
+    hidePopup('.popup__pause');
+  }
 });
 
 document
@@ -179,4 +201,24 @@ function hidePopup(popupSelector) {
     popup.style.display = 'none';
     document.querySelector('.play__popup').style.display = 'none';
   }
+}
+
+// 타이머
+function startTimer() {
+  timer = setInterval(updateTimer, 1000);
+}
+
+function updateTimer() {
+  seconds++;
+
+  const minutes = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+
+  document.querySelector('.timer__display').textContent = `${String(
+    minutes
+  ).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+}
+
+function stopTimer() {
+  clearInterval(timer);
 }
