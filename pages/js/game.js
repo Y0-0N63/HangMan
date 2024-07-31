@@ -25,7 +25,6 @@ const words = [
   'ZEALOUSLY',
 ];
 
-// 단어 출제
 function selectVoca() {
   const vocaIndex = Math.floor(Math.random() * words.length);
   return words[vocaIndex];
@@ -33,7 +32,6 @@ function selectVoca() {
 
 let selectedVoca = selectVoca();
 
-// 페이지가 로드되면 단어의 길이만큼 '_' 표시
 function makeBlank() {
   const blanks = document.querySelector('.right__blank');
   blanks.innerHTML = '';
@@ -47,8 +45,8 @@ function makeBlank() {
 
 document.addEventListener('DOMContentLoaded', function () {
   makeBlank();
-  setupQuitButton(); // 페이지가 로드된 후 quit 버튼 설정
-  startTimer(); // 페이지가 로드될 때 타이머 시작
+  setupQuitButton();
+  startTimer();
 });
 
 let wrong = 0;
@@ -57,7 +55,6 @@ let timer;
 let seconds = 0;
 let isPaused = false;
 
-// 게임 종료
 function gameOver() {
   const findAll = Array.from(
     document.querySelectorAll('.right__blank span')
@@ -74,9 +71,8 @@ function showGameOver(message, win) {
   showPopup('.popup__gameOver', message, win);
 }
 
-// 알파벳 버튼 클릭
 function clickAlphabet(event) {
-  // 게임이 일시 정지 중일 때는 아무 동작도 하지 않음
+  // 게임 일시 정지 -> 아무 동작 X
   if (isPaused) return;
 
   const button = event.target;
@@ -112,7 +108,6 @@ document.querySelectorAll('.keyboard__buttons button').forEach((button) => {
 
 // 팝업창들
 function showPopup(popupSelector, message, win) {
-  // 타이머 중지
   stopTimer();
 
   // 모든 팝업 숨기기
@@ -135,14 +130,12 @@ function showPopup(popupSelector, message, win) {
   document
     .querySelector('#gameOver__restart')
     .addEventListener('click', function () {
-      // 페이지 새로고침 (게임 재시작)
       location.reload();
     });
 
   document
-    .querySelector('#gameOver__quit')
+    .querySelector('#others__quit', '#gameOver__quit', '#pause__quit')
     .addEventListener('click', function () {
-      // index.html로 이동
       window.location.href = 'index.html';
     });
 }
@@ -153,12 +146,15 @@ function setupQuitButton() {
   quitSelectors.forEach((selector) => {
     const button = document.querySelector(selector);
     if (button) {
-      button.addEventListener('click', function () {
-        // index.html로 이동
-        window.location.href = 'index.html';
-      });
+      button.removeEventListener('click', handleQuit); // 기존 이벤트 리스너 제거
+      button.addEventListener('click', handleQuit); // 새 이벤트 리스너 추가
     }
   });
+}
+
+function handleQuit() {
+  // index.html로 이동
+  window.location.href = 'index.html';
 }
 
 // how to play?
