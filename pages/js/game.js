@@ -1,28 +1,34 @@
 const words = [
   'ADVENTURE',
   'BALANCE',
-  'CIRCUITRY',
+  'CHARACTER',
   'DYNAMICS',
-  'ELECTRIFY',
-  'ENLIGHTEN',
-  'EXAMINER',
+  'ADDICTION',
+  'DELIBERATE',
+  'FASCINATE',
   'FANTASTIC',
-  'FOREST',
+  'GRADUATE',
   'HORIZON',
   'INTEGRATE',
   'JOURNALIST',
-  'LIBRARY',
+  'DIFFERENCE',
   'MYSTERIOUS',
-  'NUMERICAL',
+  'PHILOSOPHY',
   'OPTIMIZE',
   'PERFORMANCE',
   'PHYSICAL',
   'RESEARCH',
-  'TECHNIQUE',
+  'INNOVATION',
   'UNIVERSE',
   'VARIABLE',
-  'WILDERNESS',
+  'MODERATE',
   'ZEALOUSLY',
+  'NUTRITION',
+  'DEVELOPMENT',
+  'EXPERIENCE',
+  'PHILOSOPHY',
+  'UNDERSTAND',
+  'TRADITIONAL',
 ];
 
 function selectVoca() {
@@ -142,12 +148,12 @@ function showPopup(popupSelector, message, win) {
 
 // quit
 function setupQuitButton() {
-  const quitSelectors = ['#gameOver__quit', '#pause__quit'];
+  const quitSelectors = ['#others__quit', '#gameOver__quit', '#pause__quit'];
   quitSelectors.forEach((selector) => {
     const button = document.querySelector(selector);
     if (button) {
-      button.removeEventListener('click', handleQuit); // 기존 이벤트 리스너 제거
-      button.addEventListener('click', handleQuit); // 새 이벤트 리스너 추가
+      button.removeEventListener('click', handleQuit);
+      button.addEventListener('click', handleQuit);
     }
   });
 }
