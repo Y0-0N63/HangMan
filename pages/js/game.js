@@ -1,26 +1,28 @@
 const words = [
-  'JUPITER',
-  'EARTH',
-  'PLANET',
-  'GALAXY',
-  'UNIVERSE',
-  'MOUNTAIN',
-  'OCEAN',
-  'FOREST',
-  'DESERT',
-  'VOLCANO',
-  'RADIANT',
-  'EXAMINE',
-  'JOURNAL',
-  'MYSTERY',
-  'LIBRARY',
-  'HORIZON',
-  'BALANCE',
-  'DYNAMIC',
-  'SPECIAL',
-  'TRAVEL',
-  'SERENITY',
   'ADVENTURE',
+  'BALANCE',
+  'CIRCUITRY',
+  'DYNAMICS',
+  'ELECTRIFY',
+  'ENLIGHTEN',
+  'EXAMINER',
+  'FANTASTIC',
+  'FOREST',
+  'HORIZON',
+  'INTEGRATE',
+  'JOURNALIST',
+  'LIBRARY',
+  'MYSTERIOUS',
+  'NUMERICAL',
+  'OPTIMIZE',
+  'PERFORMANCE',
+  'PHYSICAL',
+  'RESEARCH',
+  'TECHNIQUE',
+  'UNIVERSE',
+  'VARIABLE',
+  'WILDERNESS',
+  'ZEALOUSLY',
 ];
 
 // 단어 출제
@@ -50,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 let wrong = 0;
-const maxWrong = 6;
+const maxWrong = 9;
 let timer;
 let seconds = 0;
 let isPaused = false;
@@ -74,7 +76,8 @@ function showGameOver(message, win) {
 
 // 알파벳 버튼 클릭
 function clickAlphabet(event) {
-  if (isPaused) return; // 게임이 일시 정지 중일 때는 아무 동작도 하지 않음
+  // 게임이 일시 정지 중일 때는 아무 동작도 하지 않음
+  if (isPaused) return;
 
   const button = event.target;
   const letter = button.textContent;
@@ -97,6 +100,7 @@ function clickAlphabet(event) {
     button.style.backgroundColor = '#0a0a0a';
     button.style.color = '#ff696f';
     wrong++;
+    drawHangman();
   }
 
   gameOver();
@@ -108,6 +112,9 @@ document.querySelectorAll('.keyboard__buttons button').forEach((button) => {
 
 // 팝업창들
 function showPopup(popupSelector, message, win) {
+  // 타이머 중지
+  stopTimer();
+
   // 모든 팝업 숨기기
   const popups = document.querySelectorAll('.play__popup > div');
   popups.forEach((popup) => (popup.style.display = 'none'));
@@ -123,7 +130,6 @@ function showPopup(popupSelector, message, win) {
     popup.style.display = 'flex';
   }
 
-  // 버튼 클릭 시 동일한 행동을 하도록 이벤트 리스너 추가
   setupQuitButton();
 
   document
@@ -134,9 +140,8 @@ function showPopup(popupSelector, message, win) {
     });
 }
 
-// 'quit' 버튼의 공통 동작을 설정하는 함수
+// quit
 function setupQuitButton() {
-  // 버튼 선택자를 모두 명시
   const quitSelectors = ['#gameOver__quit', '#pause__quit'];
   quitSelectors.forEach((selector) => {
     const button = document.querySelector(selector);
@@ -148,7 +153,7 @@ function setupQuitButton() {
   });
 }
 
-// 도움말 보기
+// how to play?
 document.querySelector('#others__how').addEventListener('click', function () {
   if (!isPaused) {
     stopTimer();
@@ -167,7 +172,7 @@ document
     }
   });
 
-// 일시 정지 및 재개
+// pause and resume
 document.querySelector('#others__pause').addEventListener('click', function () {
   if (!isPaused) {
     stopTimer();
@@ -221,4 +226,87 @@ function updateTimer() {
 
 function stopTimer() {
   clearInterval(timer);
+}
+
+const canvas = document.getElementById('hangmanCanvas');
+const ctx = canvas.getContext('2d');
+
+function drawHangman() {
+  // 좌표 초기화
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.strokeStyle = 'black';
+  ctx.lineWidth = 5;
+
+  // 바닥
+  if (wrong > 0) {
+    ctx.beginPath();
+    ctx.moveTo(100, 650);
+    ctx.lineTo(400, 650);
+    ctx.stroke();
+  }
+
+  // 기둥
+  if (wrong > 1) {
+    ctx.beginPath();
+    ctx.moveTo(150, 650);
+    ctx.lineTo(150, 100);
+    ctx.stroke();
+  }
+
+  // 사람을 매다는 ㄱ자 모양
+  if (wrong > 2) {
+    ctx.beginPath();
+    ctx.moveTo(150, 100);
+    ctx.lineTo(250, 100);
+    ctx.lineTo(250, 150);
+    ctx.stroke();
+  }
+
+  // 머리
+  if (wrong > 3) {
+    ctx.beginPath();
+    ctx.arc(250, 200, 50, 0, Math.PI * 2, true);
+    ctx.stroke();
+  }
+
+  // 몸통
+  if (wrong > 4) {
+    ctx.beginPath();
+    ctx.moveTo(250, 250);
+    ctx.lineTo(250, 400);
+    ctx.stroke();
+  }
+
+  // 왼쪽 팔
+  if (wrong > 5) {
+    ctx.beginPath();
+    ctx.moveTo(250, 270);
+    ctx.lineTo(200, 350);
+    ctx.stroke();
+  }
+
+  // 오른쪽 팔
+  if (wrong > 6) {
+    ctx.beginPath();
+    ctx.moveTo(250, 270);
+    ctx.lineTo(300, 350);
+    ctx.stroke();
+  }
+
+  // 왼쪽 다리
+  if (wrong > 7) {
+    ctx.beginPath();
+    ctx.moveTo(250, 400);
+    ctx.lineTo(200, 500);
+    ctx.stroke();
+  }
+
+  // 오른쪽 다리
+  if (wrong > 8) {
+    ctx.beginPath();
+    ctx.moveTo(250, 400);
+    ctx.lineTo(300, 500);
+    ctx.stroke();
+    gameOver(); // 오른쪽 다리가 그려지면 게임 실패
+  }
 }
