@@ -31,7 +31,7 @@ function selectVoca() {
   return words[vocaIndex];
 }
 
-const selectedVoca = selectVoca();
+let selectedVoca = selectVoca();
 
 // 페이지가 로드되면 단어의 길이만큼 '_' 표시
 function makeBlank() {
@@ -138,6 +138,13 @@ function showPopup(popupSelector, message, win) {
       // 페이지 새로고침 (게임 재시작)
       location.reload();
     });
+
+  document
+    .querySelector('#gameOver__quit')
+    .addEventListener('click', function () {
+      // index.html로 이동
+      window.location.href = 'index.html';
+    });
 }
 
 // quit
@@ -147,6 +154,7 @@ function setupQuitButton() {
     const button = document.querySelector(selector);
     if (button) {
       button.addEventListener('click', function () {
+        // index.html로 이동
         window.location.href = 'index.html';
       });
     }
@@ -307,6 +315,5 @@ function drawHangman() {
     ctx.moveTo(250, 400);
     ctx.lineTo(300, 500);
     ctx.stroke();
-    gameOver(); // 오른쪽 다리가 그려지면 게임 실패
   }
 }
