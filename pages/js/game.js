@@ -1,4 +1,4 @@
-const words = [
+const voca = [
   'ADVENTURE',
   'BALANCE',
   'CHARACTER',
@@ -32,8 +32,8 @@ const words = [
 ];
 
 function selectVoca() {
-  const vocaIndex = Math.floor(Math.random() * words.length);
-  return words[vocaIndex];
+  const vocaIndex = Math.floor(Math.random() * voca.length);
+  return voca[vocaIndex];
 }
 
 let selectedVoca = selectVoca();
@@ -51,7 +51,7 @@ function makeBlank() {
 
 document.addEventListener('DOMContentLoaded', function () {
   makeBlank();
-  setupQuitButton();
+  quit();
   startTimer();
 });
 
@@ -131,7 +131,7 @@ function showPopup(popupSelector, message, win) {
     popup.style.display = 'flex';
   }
 
-  setupQuitButton();
+  quit();
 
   document
     .querySelector('#gameOver__restart')
@@ -147,19 +147,18 @@ function showPopup(popupSelector, message, win) {
 }
 
 // quit
-function setupQuitButton() {
+function quit() {
   const quitSelectors = ['#others__quit', '#gameOver__quit', '#pause__quit'];
   quitSelectors.forEach((selector) => {
     const button = document.querySelector(selector);
     if (button) {
-      button.removeEventListener('click', handleQuit);
-      button.addEventListener('click', handleQuit);
+      button.removeEventListener('click', quitFunc);
+      button.addEventListener('click', quitFunc);
     }
   });
 }
 
-function handleQuit() {
-  // index.html로 이동
+function quitFunc() {
   window.location.href = 'index.html';
 }
 
