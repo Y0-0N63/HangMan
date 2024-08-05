@@ -1,7 +1,7 @@
 let voca = [];
 let selectedVoca = '';
 let startTime;
-const limitTime = 90;
+const limitTime = 61;
 let wrong = 0;
 const maxWrong = 9;
 let timer;
@@ -82,11 +82,14 @@ function gameOver() {
   ).every((span) => span.textContent !== '_');
 
   // 경과 시간
-  const gamingTime = (Date.now() - startTime) / 1000;
+  const elapsedTime = (Date.now() - startTime) / 1000;
 
-  if (findAll && gamingTime <= limitTime) {
-    showGameOver('You WIN! 😄🎉', true);
-  } else if (wrong >= maxWrong || gamingTime >= limitTime) {
+  if (findAll && elapsedTime <= limitTime) {
+    showGameOver(
+      `You WIN! 😄🎉 <br> Your total elapsed time is "${elapsedTime}" Sec.`,
+      true
+    );
+  } else if (wrong >= maxWrong || elapsedTime >= limitTime) {
     showGameOver(`Game Over 😭 <br> Your word is… "${selectedVoca}"`, false);
   }
 }
