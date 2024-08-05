@@ -1,36 +1,3 @@
-const voca = [
-  'ADVENTURE',
-  'BALANCE',
-  'CHARACTER',
-  'DYNAMICS',
-  'ADDICTION',
-  'DELIBERATE',
-  'FASCINATE',
-  'FANTASTIC',
-  'GRADUATE',
-  'HORIZON',
-  'INTEGRATE',
-  'JOURNALIST',
-  'DIFFERENCE',
-  'MYSTERIOUS',
-  'PHILOSOPHY',
-  'OPTIMIZE',
-  'PERFORMANCE',
-  'PHYSICAL',
-  'RESEARCH',
-  'INNOVATION',
-  'UNIVERSE',
-  'VARIABLE',
-  'MODERATE',
-  'ZEALOUSLY',
-  'NUTRITION',
-  'DEVELOPMENT',
-  'EXPERIENCE',
-  'PHILOSOPHY',
-  'UNDERSTAND',
-  'TRADITIONAL',
-];
-
 function selectVoca() {
   const vocaIndex = Math.floor(Math.random() * voca.length);
   return voca[vocaIndex];
