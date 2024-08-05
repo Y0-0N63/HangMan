@@ -1,12 +1,5 @@
 let voca = [];
 let selectedVoca = '';
-let startTime;
-const limitTime = 61;
-let wrong = 0;
-const maxWrong = 9;
-let timer;
-let seconds = 0;
-let isPaused = false;
 
 function getVoca() {
   $.ajax({
@@ -42,47 +35,29 @@ function makeBlank() {
   }
 }
 
-function startTimer() {
-  // 기존 타이머 정지
-  if (timer) clearInterval(timer);
-  timer = setInterval(updateTimer, 1000);
-}
-
 document.addEventListener('DOMContentLoaded', function () {
   getVoca();
+  makeBlank();
   quit();
   startTimer();
 });
 
-function updateTimer() {
-  // 경과 시간 (초 단위)
-  const elapsedTime = (Date.now() - startTime) / 1000;
+let wrong = 0;
+const maxWrong = 9;
 
-  if (elapsedTime >= limitTime) {
-    gameOver();
-  } else {
-    seconds = Math.floor(elapsedTime);
-    const minutes = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    document.querySelector('.timer__display').textContent = `${String(
-      minutes
-    ).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-  }
-}
-
-function stopTimer() {
-  clearInterval(timer);
-  timer = null;
-}
+let timer;
+let seconds = 0;
+let startTime;
+const limitTime = 61;
+let elapsedTime = 0;
+let pausedTime = 0;
+let isPaused = false;
 
 function gameOver() {
   const findAll = Array.from(
     document.querySelectorAll('.right__blank span')
     // 모든 빈칸 채워짐 -> true, 그렇지 않음 -> false
   ).every((span) => span.textContent !== '_');
-
-  // 경과 시간
-  const elapsedTime = (Date.now() - startTime) / 1000;
 
   if (findAll && elapsedTime <= limitTime) {
     showGameOver(
@@ -148,7 +123,6 @@ function showPopup(popupSelector, message, win) {
     if (message) {
       popup.querySelector('.gameOver__message').innerHTML = message;
     }
-
     // 현재 팝업만 보이게 하기
     document.querySelector('.play__popup').style.display = 'flex';
     popup.style.display = 'flex';
@@ -195,7 +169,6 @@ document.querySelector('#others__how').addEventListener('click', function () {
   }
   showPopup('.popup__howToPlay');
 });
-
 document
   .querySelector('.howToPlay__close')
   .addEventListener('click', function () {
@@ -205,7 +178,6 @@ document
       isPaused = false;
     }
   });
-
 // pause and resume
 document.querySelector('#others__pause').addEventListener('click', function () {
   if (!isPaused) {
@@ -216,8 +188,11 @@ document.querySelector('#others__pause').addEventListener('click', function () {
 });
 
 document.querySelector('.pause__close').addEventListener('click', function () {
-  hidePopup('.popup__pause');
-  startTimer();
+  if (isPaused) {
+    startTimer();
+    isPaused = false;
+    hidePopup('.popup__pause');
+  }
 });
 
 document.querySelector('#pause__resume').addEventListener('click', function () {
@@ -245,7 +220,44 @@ function hidePopup(popupSelector) {
 
 // 타이머
 function startTimer() {
+  // 기존 타이머가 있다면 중지
+  stopTimer();
+  startTime = Date.now() - elapsedTime * 1000;
   timer = setInterval(updateTimer, 1000);
+}
+
+function updateTimer() {
+  seconds++;
+  elapsedTime = (Date.now() - startTime) / 1000;
+
+  if (elapsedTime >= limitTime) {
+    gameOver();
+  } else {
+    seconds = Math.floor(elapsedTime);
+    const minutes = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    document.querySelector('.timer__display').textContent = `${String(
+      minutes
+    ).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+  }
+}
+
+function stopTimer() {
+  if (timer) {
+    // 타이머가 설정된 경우에만 중지
+    clearInterval(timer);
+    timer = null; // 타이머 변수 초기화
+  }
+}
+
+function pauseTimer() {
+  stopTimer();
+  // 현재 시간을 일시 정지 시간으로 저장
+  pausedTime = elapsedTime;
+}
+
+function resumeTimer() {
+  startTimer(); // 타이머를 다시 시작
 }
 
 // 행맨 그리기

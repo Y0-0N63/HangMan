@@ -170,7 +170,8 @@ body {
 .howToPlay__close:hover,
 .pause__close:hover,
 .gameOver__close:hover,
-.gameOver__buttons button:hover {
+.gameOver__buttons button:hover,
+.pause__buttons button:hover {
   background-color: #a30000;
 }
 
