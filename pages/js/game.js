@@ -1,42 +1,27 @@
-const voca = [
-  'ADVENTURE',
-  'BALANCE',
-  'CHARACTER',
-  'DYNAMICS',
-  'ADDICTION',
-  'DELIBERATE',
-  'FASCINATE',
-  'FANTASTIC',
-  'GRADUATE',
-  'HORIZON',
-  'INTEGRATE',
-  'JOURNALIST',
-  'DIFFERENCE',
-  'MYSTERIOUS',
-  'PHILOSOPHY',
-  'OPTIMIZE',
-  'PERFORMANCE',
-  'PHYSICAL',
-  'RESEARCH',
-  'INNOVATION',
-  'UNIVERSE',
-  'VARIABLE',
-  'MODERATE',
-  'ZEALOUSLY',
-  'NUTRITION',
-  'DEVELOPMENT',
-  'EXPERIENCE',
-  'PHILOSOPHY',
-  'UNDERSTAND',
-  'TRADITIONAL',
-];
+let voca = [];
+let selectedVoca = '';
+
+function getVoca() {
+  $.ajax({
+    type: 'get',
+    url: '/Hangster/Hangster/data/voca.json',
+    dataType: 'json',
+    success: function (data) {
+      console.log('Data Loaded? -> ', data);
+      voca = data;
+      selectedVoca = selectVoca();
+      makeBlank();
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+      console.error('AJAX Error:', textStatus, errorThrown); // 오류 메시지 확인
+    },
+  });
+}
 
 function selectVoca() {
   const vocaIndex = Math.floor(Math.random() * voca.length);
   return voca[vocaIndex];
 }
-
-let selectedVoca = selectVoca();
 
 function makeBlank() {
   const blanks = document.querySelector('.right__blank');
@@ -50,7 +35,7 @@ function makeBlank() {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-  makeBlank();
+  getVoca();
   quit();
   startTimer();
 });
