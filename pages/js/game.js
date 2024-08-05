@@ -64,6 +64,7 @@ let isPaused = false;
 function gameOver() {
   const findAll = Array.from(
     document.querySelectorAll('.right__blank span')
+    // 모든 빈칸 채워짐 -> true, 그렇지 않음 -> false
   ).every((span) => span.textContent !== '_');
 
   if (findAll) {
@@ -81,9 +82,11 @@ function clickAlphabet(event) {
   // 게임 일시 정지 -> 아무 동작 X
   if (isPaused) return;
 
+  // 클릭된 HTML 요소 (=버튼)
   const button = event.target;
   const letter = button.textContent;
 
+  // 알파벳 버튼 X -> 함수 실행 중지
   if (!button.classList.contains('buttons__alphabet')) return;
   button.disabled = true;
 
@@ -95,7 +98,6 @@ function clickAlphabet(event) {
         }
       }
     );
-
     button.style.backgroundColor = '#0a0a0a';
     button.style.color = '#50adff';
   } else {
@@ -117,6 +119,7 @@ function showPopup(popupSelector, message, win) {
   stopTimer();
 
   // 모든 팝업 숨기기
+  // play__popup의 자식 div 요소들
   const popups = document.querySelectorAll('.play__popup > div');
   popups.forEach((popup) => (popup.style.display = 'none'));
 
@@ -136,6 +139,7 @@ function showPopup(popupSelector, message, win) {
   document
     .querySelector('#gameOver__restart')
     .addEventListener('click', function () {
+      // 페이지 새로고침
       location.reload();
     });
 
@@ -152,6 +156,7 @@ function quit() {
   quitSelectors.forEach((selector) => {
     const button = document.querySelector(selector);
     if (button) {
+      // 중복 방지하여 제거
       button.removeEventListener('click', quitFunc);
       button.addEventListener('click', quitFunc);
     }
@@ -192,6 +197,7 @@ document.querySelector('#others__pause').addEventListener('click', function () {
 
 document.querySelector('.pause__close').addEventListener('click', function () {
   hidePopup('.popup__pause');
+  startTimer();
 });
 
 document.querySelector('#pause__resume').addEventListener('click', function () {
@@ -237,6 +243,7 @@ function stopTimer() {
   clearInterval(timer);
 }
 
+// 행맨 그리기
 const canvas = document.getElementById('hangmanCanvas');
 const ctx = canvas.getContext('2d');
 
