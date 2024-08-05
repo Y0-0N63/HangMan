@@ -1,5 +1,12 @@
 let voca = [];
 let selectedVoca = '';
+let startTime;
+const limitTime = 90;
+let wrong = 0;
+const maxWrong = 9;
+let timer;
+let seconds = 0;
+let isPaused = false;
 
 function getVoca() {
   $.ajax({
@@ -7,13 +14,14 @@ function getVoca() {
     url: '/Hangster/Hangster/data/voca.json',
     dataType: 'json',
     success: function (data) {
-      console.log('Data Loaded? -> ', data);
       voca = data;
       selectedVoca = selectVoca();
       makeBlank();
+      startTime = Date.now();
+      startTimer();
     },
     error: function (jqXHR, textStatus, errorThrown) {
-      console.error('AJAX Error:', textStatus, errorThrown); // 오류 메시지 확인
+      console.error('AJAX Error:', textStatus, errorThrown);
     },
   });
 }
@@ -34,17 +42,38 @@ function makeBlank() {
   }
 }
 
+function startTimer() {
+  // 기존 타이머 정지
+  if (timer) clearInterval(timer);
+  timer = setInterval(updateTimer, 1000);
+}
+
 document.addEventListener('DOMContentLoaded', function () {
   getVoca();
   quit();
   startTimer();
 });
 
-let wrong = 0;
-const maxWrong = 9;
-let timer;
-let seconds = 0;
-let isPaused = false;
+function updateTimer() {
+  // 경과 시간 (초 단위)
+  const elapsedTime = (Date.now() - startTime) / 1000;
+
+  if (elapsedTime >= limitTime) {
+    gameOver();
+  } else {
+    seconds = Math.floor(elapsedTime);
+    const minutes = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    document.querySelector('.timer__display').textContent = `${String(
+      minutes
+    ).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+  }
+}
+
+function stopTimer() {
+  clearInterval(timer);
+  timer = null;
+}
 
 function gameOver() {
   const findAll = Array.from(
@@ -52,9 +81,12 @@ function gameOver() {
     // 모든 빈칸 채워짐 -> true, 그렇지 않음 -> false
   ).every((span) => span.textContent !== '_');
 
-  if (findAll) {
+  // 경과 시간
+  const gamingTime = (Date.now() - startTime) / 1000;
+
+  if (findAll && gamingTime <= limitTime) {
     showGameOver('You WIN! 😄🎉', true);
-  } else if (wrong >= maxWrong) {
+  } else if (wrong >= maxWrong || gamingTime >= limitTime) {
     showGameOver(`Game Over 😭 <br> Your word is… "${selectedVoca}"`, false);
   }
 }
@@ -211,21 +243,6 @@ function hidePopup(popupSelector) {
 // 타이머
 function startTimer() {
   timer = setInterval(updateTimer, 1000);
-}
-
-function updateTimer() {
-  seconds++;
-
-  const minutes = Math.floor(seconds / 60);
-  const secs = seconds % 60;
-
-  document.querySelector('.timer__display').textContent = `${String(
-    minutes
-  ).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-}
-
-function stopTimer() {
-  clearInterval(timer);
 }
 
 // 행맨 그리기
