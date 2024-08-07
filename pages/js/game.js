@@ -4,7 +4,7 @@ let selectedVoca = '';
 function getVoca() {
   $.ajax({
     type: 'get',
-    url: '/Hangster/Hangster/data/voca.json',
+    url: '../../data/voca.json',
     dataType: 'json',
     success: function (data) {
       voca = data;
